@@ -79,12 +79,29 @@ function deleteNote() {
     });
 }
 
+function displayNotes() {
+    fs.readFile(notesFile, 'utf8', (err, data) => {
+        if (err) throw err;
+        const notes = data.split('\n');
+        console.log('===== 전체 메모 내용 =====');
+        notes.forEach((note, index) => {
+            if (note.trim() !== '') {
+                console.log(`${index + 1}. ${note}`);
+            } //공백에도 번호가 붙어서 출력되는걸 방지
+        });
+        console.log('=======================');
+        showMenu();
+    });
+}
+//전체 메모 내역 확인
+
 function showMenu() {
     console.log('===== 메모장 =====');
     console.log('1. 메모 삽입');
     console.log('2. 메모 검색');
     console.log('3. 메모 수정');
     console.log('4. 메모 삭제');
+    console.log('5. 메모 확인');
     console.log('0. 종료');
     console.log('=================');
     rl.question('원하는 작업을 선택하세요: ', (choice) => {
@@ -100,6 +117,9 @@ function showMenu() {
                 break;
             case '4':
                 deleteNote();
+                break;
+            case '5':
+                displayNotes();
                 break;
             case '0':
                 rl.close();
